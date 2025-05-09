@@ -1,4 +1,8 @@
 package com.example
+import com.example.config.configureJWTSecurity
+import com.example.config.configureKoin
+import com.example.config.configureMonitoring
+import com.example.config.configureSwagger
 
 import io.ktor.server.application.*
 
@@ -7,10 +11,8 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureHTTP()
-    configureSerialization()
-    configureDatabases()
+    configureKoin()
+    configureSwagger()
     configureMonitoring()
-    configureSecurity()
-    configureRouting()
+    configureJWTSecurity()
 }
