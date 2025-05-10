@@ -26,8 +26,7 @@ fun Application.authRoutes() {
 
             post("/login") {
                 val requestBody = call.receive<LoginRequest>()
-                //TODO: login actually
-                val response = LoginResponse("sampleJwt")
+                val response = authService.login(requestBody)
                 call.respond(response)
             }
 
