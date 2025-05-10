@@ -1,4 +1,4 @@
-package com.example.servicees.auth
+package com.example.services.auth
 
 import com.auth0.jwt.interfaces.JWTVerifier
 import io.ktor.server.auth.jwt.JWTCredential

@@ -1,10 +1,10 @@
-package com.example.servicees.auth.impl
+package com.example.services.auth.impl
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.JWTVerifier
-import com.example.servicees.auth.JwtClaims
-import com.example.servicees.auth.JwtService
+import com.example.services.auth.JwtClaims
+import com.example.services.auth.JwtService
 import io.ktor.server.auth.jwt.JWTCredential
 import io.ktor.server.auth.jwt.JWTPrincipal
 import java.util.Date
