@@ -5,7 +5,6 @@ info:
     API for yacht reservation system.
     
     ## Authentication
-    All endpoints except `/auth/login` require JWT authentication.
     Include the JWT token in the Authorization header:
     ```
     Authorization: Bearer <your-token>
@@ -24,15 +23,40 @@ components:
       bearerFormat: JWT
 
   schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+        password:
+          type: string
+          description: User's password
+          format: password
+
+    RegisterResponse:
+      type: object
+      required:
+        - jwtToken
+      properties:
+        jwtToken:
+          type: string
+          description: JWT token for authentication
+
     LoginRequest:
       type: object
       required:
-        - username
+        - email
         - password
       properties:
-        username:
+        email:
           type: string
-          description: User's username
+          format: email
+          description: User's email address
         password:
           type: string
           description: User's password
@@ -41,9 +65,9 @@ components:
     LoginResponse:
       type: object
       required:
-        - token
+        - jwtToken
       properties:
-        token:
+        jwtToken:
           type: string
           description: JWT token for authentication
 
@@ -55,6 +79,32 @@ components:
           description: Error message
 
 paths:
+  /auth/register:
+    post:
+      summary: Register new user
+      description: Create a new user account and return JWT token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /auth/login:
     post:
       summary: Login user
@@ -80,6 +130,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /auth/validate-token:
     get:
@@ -94,6 +150,12 @@ paths:
           description: Token is valid
         '401':
           description: Token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
           content:
             application/json:
               schema:
