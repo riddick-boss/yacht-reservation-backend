@@ -11,7 +11,7 @@ import java.util.Date
 
 class JwtServiceImpl(
     private val expirationMillis: Long = ONE_WEEK,
-    private val secret: String = "jwtSuperSecretToComplyWithHMAC256Algorithm"
+    private val secret: String = System.getenv("JWT_SECRET")
 ) : JwtService {
     override val jwtVerifier: JWTVerifier by lazy {
         JWT
@@ -38,7 +38,6 @@ class JwtServiceImpl(
             null
         }
     }
-
 }
 
 private const val ONE_WEEK = 7 * 24 * 60 * 60 * 1000L
