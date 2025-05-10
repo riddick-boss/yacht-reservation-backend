@@ -1,6 +1,6 @@
 package com.example.di
 
-import com.example.repository.InMemoryUerRepository
+import com.example.repository.InMemoryUserRepository
 import com.example.repository.UserRepository
 import com.example.services.auth.AuthService
 import com.example.services.auth.JwtService
@@ -12,5 +12,5 @@ val appModule = module {
     single<JwtService> { JwtServiceImpl() }
     single<AuthService> { AuthServiceImpl(get(), get()) }
 
-    single<UserRepository> { InMemoryUerRepository() }
+    single<UserRepository> { InMemoryUserRepository() }
 }

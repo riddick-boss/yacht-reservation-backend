@@ -6,7 +6,7 @@ interface UserRepository {
     fun save(user: User)
 }
 
-class InMemoryUerRepository : UserRepository {
+class InMemoryUserRepository : UserRepository {
     private val usersList = mutableListOf<User>()
 
     override fun save(user: User) {
