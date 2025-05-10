@@ -2,9 +2,10 @@ package com.example.routes
 
 import com.example.config.JWT_AUTH
 import com.example.dto.LoginRequest
-import com.example.dto.LoginResponse
 import com.example.dto.RegisterRequest
 import com.example.services.auth.AuthService
+import com.example.services.auth.JwtClaims
+import com.example.utils.getPrincipalStringClaim
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -26,8 +27,7 @@ fun Application.authRoutes() {
 
             post("/login") {
                 val requestBody = call.receive<LoginRequest>()
-                //TODO: login actually
-                val response = LoginResponse("sampleJwt")
+                val response = authService.login(requestBody)
                 call.respond(response)
             }
 
@@ -35,7 +35,8 @@ fun Application.authRoutes() {
 //            AUTHENTICATED ROUTES
             authenticate(JWT_AUTH) {
                 get("/validate-token") {
-                    //TODO: implement actual logic
+                    val email = call.getPrincipalStringClaim(JwtClaims.EMAIL)
+                    authService.verifyUser(email)
                     call.respond(HttpStatusCode.OK)
                 }
             }

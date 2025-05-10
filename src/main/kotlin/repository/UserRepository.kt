@@ -4,6 +4,7 @@ import com.example.model.User
 
 interface UserRepository {
     fun save(user: User)
+    fun getByEmail(email: String): User?
 }
 
 class InMemoryUserRepository : UserRepository {
@@ -15,7 +16,7 @@ class InMemoryUserRepository : UserRepository {
         usersList.add(user)
     }
 
-    private fun getByEmail(email: String): User? {
+    override fun getByEmail(email: String): User? {
         return usersList.firstOrNull { it.email == email }
     }
 
