@@ -6,6 +6,6 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 
 interface JwtService {
     val jwtVerifier: JWTVerifier
-    fun generateJwt(username: String): String
+    fun generateJwt(email: String): String
     fun validateJwt(jwtCredential: JWTCredential): JWTPrincipal?
 }
