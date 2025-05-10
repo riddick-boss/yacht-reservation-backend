@@ -5,6 +5,7 @@ import com.example.config.configureJWTSecurity
 import com.example.config.configureKoin
 import com.example.config.configureMonitoring
 import com.example.config.configureRouting
+import com.example.config.configureStatusPages
 import com.example.config.configureSwagger
 import io.ktor.server.application.Application
 import io.ktor.server.netty.EngineMain
@@ -19,5 +20,6 @@ fun Application.module() {
     configureMonitoring()
     configureContentNegotiation()
     configureJWTSecurity()
+    configureStatusPages()
     configureRouting()
 }

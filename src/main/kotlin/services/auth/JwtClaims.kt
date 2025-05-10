@@ -1,5 +1,5 @@
 package com.example.services.auth
 
 object JwtClaims {
-    const val USERNAME = "username"
+    const val EMAIL = "email"
 }

@@ -19,25 +19,29 @@ class JwtServiceImpl(
             .build()
     }
 
-    override fun generateJwt(username: String): String {
+    override fun generateJwt(email: String): String {
         return JWT.create()
-            .withClaim(JwtClaims.USERNAME, username)
+            .withClaim(JwtClaims.EMAIL, email)
             .withExpiresAt(Date(System.currentTimeMillis() + expirationMillis))
             .sign(Algorithm.HMAC256(secret))
     }
 
     override fun validateJwt(jwtCredential: JWTCredential): JWTPrincipal? {
-        val now = Date(System.currentTimeMillis())
         val expiryDate = jwtCredential.expiresAt ?: return null
-        val isBeforeExpiry = now.before(expiryDate)
-        val username = jwtCredential.payload.getClaim(JwtClaims.USERNAME).asString()
-        val isUsernameValid = !username.isNullOrBlank()
-        return if (isBeforeExpiry && isUsernameValid) {
+        val email = jwtCredential.payload.getClaim(JwtClaims.EMAIL).asString()
+        return if (isBeforeExpiry(expiryDate) && isEmailValid(email)) {
             JWTPrincipal(jwtCredential.payload)
         } else {
             null
         }
     }
+
+    private fun isBeforeExpiry(expiryDate: Date): Boolean {
+        val now = Date(System.currentTimeMillis())
+        return now.before(expiryDate)
+    }
+
+    private fun isEmailValid(email: String?): Boolean = !email.isNullOrBlank()
 }
 
 private const val ONE_WEEK = 7 * 24 * 60 * 60 * 1000L
