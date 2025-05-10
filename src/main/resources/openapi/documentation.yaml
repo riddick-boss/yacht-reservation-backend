@@ -1,23 +1,103 @@
 openapi: "3.0.3"
 info:
-  title: "Application API"
-  description: "Application API"
+  title: "Yacht Reservation API"
+  description: |
+    API for yacht reservation system.
+    
+    ## Authentication
+    All endpoints except `/auth/login` require JWT authentication.
+    Include the JWT token in the Authorization header:
+    ```
+    Authorization: Bearer <your-token>
+    ```
   version: "1.0.0"
+
 servers:
   - url: "http://0.0.0.0:8080"
-paths:
-  /:
-    get:
-      description: "Hello World!"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Hello World!"
+    description: "Local development server"
+
 components:
-  schemas: {}
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: User's username
+        password:
+          type: string
+          description: User's password
+          format: password
+
+    LoginResponse:
+      type: object
+      required:
+        - token
+      properties:
+        token:
+          type: string
+          description: JWT token for authentication
+
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+
+paths:
+  /auth/login:
+    post:
+      summary: Login user
+      description: Authenticate user and return JWT token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/validate-token:
+    get:
+      summary: Validate JWT token
+      description: Check if the provided JWT token is valid
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Token is valid
+        '401':
+          description: Token is invalid or expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+security:
+  - bearerAuth: []
