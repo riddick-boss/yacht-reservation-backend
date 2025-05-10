@@ -35,4 +35,9 @@ class AuthServiceImpl(
         val jwt = jwtService.generateJwt(user.email)
         return LoginResponse(jwtToken = jwt)
     }
+
+    override fun verifyUser(email: String) {
+        val user = userRepository.getByEmail(email)
+        if (user == null) throw NotFoundException()
+    }
 }

@@ -8,4 +8,5 @@ import com.example.dto.RegisterResponse
 interface AuthService {
     fun register(request: RegisterRequest): RegisterResponse
     fun login(request: LoginRequest): LoginResponse
+    fun verifyUser(email: String)
 }
