@@ -23,6 +23,36 @@ components:
       bearerFormat: JWT
 
   schemas:
+    Yacht:
+      type: object
+      required:
+        - id
+        - name
+        - manufacturer
+        - length
+        - crewNum
+        - price
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the yacht
+        name:
+          type: string
+          description: Name of the yacht
+        manufacturer:
+          type: string
+          description: Manufacturer of the yacht
+        length:
+          type: number
+          format: double
+          description: Length of the yacht in feet
+        crewNum:
+          type: integer
+          description: Number of crew members required
+        price:
+          type: integer
+          description: Price of the yacht in USD
+
     RegisterRequest:
       type: object
       required:
@@ -156,6 +186,28 @@ paths:
                 $ref: '#/components/schemas/Error'
         '404':
           description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /yachts/all:
+    get:
+      summary: Get all yachts
+      description: Retrieves a list of all available yachts
+      tags:
+        - Yachts
+      responses:
+        '200':
+          description: Successfully retrieved the list of yachts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Yacht'
+        '401':
+          description: Unauthorized - Invalid or missing token
           content:
             application/json:
               schema:

@@ -23,4 +23,15 @@ class InMemoryUserRepository : UserRepository {
     private fun userAlreadyExists(user: User): Boolean {
         return getByEmail(user.email) != null
     }
+
+    init {
+        usersList.addAll(sampleUsers)
+    }
 }
+
+private val sampleUsers = listOf(
+    User(
+        email = "test@test.com",
+        password = "test123"
+    )
+)
