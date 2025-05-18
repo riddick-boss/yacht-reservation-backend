@@ -108,6 +108,53 @@ components:
           type: string
           description: Error message
 
+    YachtReservationRequest:
+      type: object
+      required:
+        - yachtId
+        - startTime
+        - endTime
+      properties:
+        yachtId:
+          type: integer
+          description: ID of the yacht to reserve
+        startTime:
+          type: integer
+          description: Start time of the reservation (Unix timestamp)
+        endTime:
+          type: integer
+          description: End time of the reservation (Unix timestamp)
+
+    ReservationDto:
+      type: object
+      required:
+        - id
+        - yacht
+        - startTime
+        - endTime
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the reservation
+        yacht:
+          $ref: '#/components/schemas/Yacht'
+        startTime:
+          type: integer
+          description: Start time of the reservation (Unix timestamp)
+        endTime:
+          type: integer
+          description: End time of the reservation (Unix timestamp)
+
+    ReservationsResponse:
+      type: object
+      required:
+        - list
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReservationDto'
+
 paths:
   /auth/register:
     post:
@@ -206,6 +253,58 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Yacht'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /yachts/reserve:
+    post:
+      summary: Make a yacht reservation
+      description: Create a new reservation for a specific yacht
+      tags:
+        - Yachts
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/YachtReservationRequest'
+      responses:
+        '200':
+          description: Reservation created successfully
+        '400':
+          description: Invalid request or yacht not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /yachts/reservations:
+    get:
+      summary: Get user's reservations
+      description: Retrieve all reservations for the authenticated user
+      tags:
+        - Yachts
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved user's reservations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservationsResponse'
         '401':
           description: Unauthorized - Invalid or missing token
           content:

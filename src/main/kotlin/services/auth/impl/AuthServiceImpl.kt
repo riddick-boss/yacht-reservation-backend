@@ -11,6 +11,7 @@ import com.example.services.auth.AuthService
 import com.example.services.auth.JwtService
 import io.ktor.server.plugins.NotFoundException
 import javax.naming.AuthenticationException
+import kotlin.random.Random
 
 class AuthServiceImpl(
     private val userRepository: UserRepository,
@@ -19,6 +20,7 @@ class AuthServiceImpl(
 ) : AuthService {
     override fun register(request: RegisterRequest): RegisterResponse {
         val user = User(
+            id = Random.nextInt(),
             email = request.email,
             password = request.password
         )

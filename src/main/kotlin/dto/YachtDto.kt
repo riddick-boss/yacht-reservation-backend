@@ -4,15 +4,35 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AllYachtsResponse(
-    val list: List<Yacht>
-) {
-    @Serializable
-    data class Yacht(
-        val id: Int,
-        val name: String,
-        val manufacturer: String,
-        val length: Double,
-        val crewNum: Int,
-        val price: Int
-    )
-}
+    val list: List<YachtDto>
+)
+
+@Serializable
+data class YachtDto(
+    val id: Int,
+    val name: String,
+    val manufacturer: String,
+    val length: Double,
+    val crewNum: Int,
+    val price: Int
+)
+
+@Serializable
+data class YachtReservationRequest(
+    val yachtId: Int,
+    val startTime: Int,
+    val endTime: Int
+)
+
+@Serializable
+data class ReservationsResponse(
+    val list: List<ReservationDto>
+)
+
+@Serializable
+data class ReservationDto(
+    val id: Int,
+    val yacht: YachtDto,
+    val startTime: Int,
+    val endTime: Int
+)
