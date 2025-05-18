@@ -4,6 +4,7 @@ import com.example.model.Yacht
 
 interface YachtRepository {
     fun getAll(): List<Yacht>
+    fun get(yachtId: Int): Yacht?
 }
 
 class InMemoryYachtRepository : YachtRepository {
@@ -12,6 +13,8 @@ class InMemoryYachtRepository : YachtRepository {
     override fun getAll(): List<Yacht> {
         return yachtsList
     }
+
+    override fun get(yachtId: Int): Yacht? = yachtsList.firstOrNull { it.id == yachtId }
 
     init {
         yachtsList.addAll(sampleYachts)

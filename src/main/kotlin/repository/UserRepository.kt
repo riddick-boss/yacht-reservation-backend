@@ -31,6 +31,7 @@ class InMemoryUserRepository : UserRepository {
 
 private val sampleUsers = listOf(
     User(
+        id = 0,
         email = "test@test.com",
         password = "test123"
     )
