@@ -19,7 +19,9 @@ class YachtMapper {
         manufacturer = manufacturer,
         length = length,
         crewNum = crewNum,
-        price = price
+        pricePerDay = pricePerDay,
+        imageUrl = imageUrl,
+        isAvailable = isAvailable
     )
 
     fun toReservationDto(reservation: Reservation, yacht: Yacht): ReservationDto {
