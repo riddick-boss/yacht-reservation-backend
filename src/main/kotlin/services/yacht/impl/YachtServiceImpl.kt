@@ -1,6 +1,6 @@
 package com.example.services.yacht.impl
 
-import com.example.dto.AllYachtsResponse
+import com.example.dto.YachtsResponse
 import com.example.dto.ReservationsResponse
 import com.example.dto.YachtReservationRequest
 import com.example.model.Reservation
@@ -16,10 +16,16 @@ class YachtServiceImpl(
     private val userRepository: UserRepository,
     private val mapper: YachtMapper
 ) : YachtService {
-    override fun getAllYachts(): AllYachtsResponse {
+    override fun getAllYachts(): YachtsResponse {
         val list = yachtRepository.getAll()
-        return mapper.toAllYachtsResponse(list)
+        return mapper.toYachtsResponse(list)
     }
+
+    override fun getFeaturedYachts(): YachtsResponse {
+        val list = yachtRepository.getAll().shuffled().take(3)
+        return mapper.toYachtsResponse(list)
+    }
+
 
     override fun makeReservation(userEmail: String, request: YachtReservationRequest) {
         val user = userRepository.getByEmail(userEmail) ?: throw IllegalArgumentException("User not found!")

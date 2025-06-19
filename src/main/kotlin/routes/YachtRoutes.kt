@@ -22,6 +22,11 @@ fun Application.yachtRoutes() {
                 call.respond(response)
             }
 
+            get("/featured") {
+                val response = yachtService.getFeaturedYachts()
+                call.respond(response)
+            }
+
             authenticate(JWT_AUTH) {
                 post("/reserve") {
                     val userEmail = call.getPrincipalStringClaim(JwtClaims.EMAIL)

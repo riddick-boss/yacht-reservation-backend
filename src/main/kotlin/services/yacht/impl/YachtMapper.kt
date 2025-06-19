@@ -1,6 +1,6 @@
 package com.example.services.yacht.impl
 
-import com.example.dto.AllYachtsResponse
+import com.example.dto.YachtsResponse
 import com.example.dto.ReservationDto
 import com.example.dto.ReservationsResponse
 import com.example.dto.YachtDto
@@ -8,9 +8,9 @@ import com.example.model.Reservation
 import com.example.model.Yacht
 
 class YachtMapper {
-    fun toAllYachtsResponse(yachts: List<Yacht>): AllYachtsResponse {
+    fun toYachtsResponse(yachts: List<Yacht>): YachtsResponse {
         val dtoList = yachts.map { it.toYachtDto() }
-        return AllYachtsResponse(list = dtoList)
+        return YachtsResponse(list = dtoList)
     }
 
     private fun Yacht.toYachtDto(): YachtDto = YachtDto(
