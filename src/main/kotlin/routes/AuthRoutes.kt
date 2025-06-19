@@ -31,7 +31,6 @@ fun Application.authRoutes() {
                 call.respond(response)
             }
 
-
 //            AUTHENTICATED ROUTES
             authenticate(JWT_AUTH) {
                 get("/validate-token") {
