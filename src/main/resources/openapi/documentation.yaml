@@ -205,6 +205,73 @@ components:
           items:
             $ref: '#/components/schemas/ReservationDto'
 
+    YachtBookingRequest:
+      type: object
+      required:
+        - yachtId
+        - day
+      properties:
+        yachtId:
+          type: integer
+          description: ID of the yacht to book
+        day:
+          type: string
+          format: date
+          description: Date of the booking (YYYY-MM-DD format)
+
+    YachtBookingDto:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the yacht
+
+    BookingLocationDto:
+      type: object
+      required:
+        - name
+        - imageUrl
+      properties:
+        name:
+          type: string
+          description: Name of the marina location
+        imageUrl:
+          type: string
+          format: uri
+          description: URL to the location's image
+
+    BookingDto:
+      type: object
+      required:
+        - id
+        - yacht
+        - day
+        - location
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the booking
+        yacht:
+          $ref: '#/components/schemas/YachtBookingDto'
+        day:
+          type: string
+          format: date
+          description: Date of the booking (YYYY-MM-DD format)
+        location:
+          $ref: '#/components/schemas/BookingLocationDto'
+
+    BookingsResponse:
+      type: object
+      required:
+        - list
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingDto'
+
 paths:
   /auth/register:
     post:
@@ -394,12 +461,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /yachts/reserve:
+  /bookings/book:
     post:
-      summary: Make a yacht reservation
-      description: Create a new reservation for a specific yacht
+      summary: Create a new booking
+      description: Book a yacht for a specific day
       tags:
-        - Yachts
+        - Bookings
       security:
         - bearerAuth: []
       requestBody:
@@ -407,10 +474,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/YachtReservationRequest'
+              $ref: '#/components/schemas/YachtBookingRequest'
       responses:
         '200':
-          description: Reservation created successfully
+          description: Booking created successfully
         '400':
           description: Invalid request, yacht not found, or yacht not available
           content:
@@ -430,21 +497,86 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /yachts/reservations:
-    get:
-      summary: Get user's reservations
-      description: Retrieve all reservations for the authenticated user with yacht details
+  /bookings/{id}:
+    delete:
+      summary: Cancel a booking
+      description: Delete a specific booking by ID
       tags:
-        - Yachts
+        - Bookings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID of the booking to cancel
+      responses:
+        '202':
+          description: Booking cancelled successfully
+        '400':
+          description: Invalid booking ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found or booking not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /bookings/upcoming:
+    get:
+      summary: Get upcoming bookings
+      description: Retrieve all upcoming bookings for the authenticated user
+      tags:
+        - Bookings
       security:
         - bearerAuth: []
       responses:
         '200':
-          description: Successfully retrieved user's reservations
+          description: Successfully retrieved upcoming bookings
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReservationsResponse'
+                $ref: '#/components/schemas/BookingsResponse'
+        '401':
+          description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /bookings/past:
+    get:
+      summary: Get past bookings
+      description: Retrieve all past bookings for the authenticated user
+      tags:
+        - Bookings
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successfully retrieved past bookings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingsResponse'
         '401':
           description: Unauthorized - Invalid or missing token
           content:

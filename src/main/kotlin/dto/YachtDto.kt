@@ -18,23 +18,3 @@ data class YachtDto(
     val imageUrl: String,
     val isAvailable: Boolean
 )
-
-@Serializable
-data class YachtReservationRequest(
-    val yachtId: Int,
-    val startTime: Int,
-    val endTime: Int
-)
-
-@Serializable
-data class ReservationsResponse(
-    val list: List<ReservationDto>
-)
-
-@Serializable
-data class ReservationDto(
-    val id: Int,
-    val yacht: YachtDto,
-    val startTime: Int,
-    val endTime: Int
-)
