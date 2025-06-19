@@ -31,7 +31,9 @@ components:
         - manufacturer
         - length
         - crewNum
-        - price
+        - pricePerDay
+        - imageUrl
+        - isAvailable
       properties:
         id:
           type: integer
@@ -45,13 +47,30 @@ components:
         length:
           type: number
           format: double
-          description: Length of the yacht in feet
+          description: Length of the yacht in meters
         crewNum:
           type: integer
           description: Number of crew members required
-        price:
+        pricePerDay:
           type: integer
-          description: Price of the yacht in USD
+          description: Price per day in USD
+        imageUrl:
+          type: string
+          format: uri
+          description: URL to the yacht's image
+        isAvailable:
+          type: boolean
+          description: Whether the yacht is available for reservation
+
+    YachtsResponse:
+      type: object
+      required:
+        - list
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Yacht'
 
     RegisterRequest:
       type: object
@@ -338,7 +357,7 @@ paths:
   /yachts/all:
     get:
       summary: Get all yachts
-      description: Retrieves a list of all available yachts
+      description: Retrieves a list of all available yachts with their details including images and pricing
       tags:
         - Yachts
       responses:
@@ -347,11 +366,29 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Yacht'
-        '401':
-          description: Unauthorized - Invalid or missing token
+                $ref: '#/components/schemas/YachtsResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /yachts/featured:
+    get:
+      summary: Get featured yachts
+      description: Retrieves a curated list of featured yachts (typically 3 random yachts) for highlighting on the home page
+      tags:
+        - Yachts
+      responses:
+        '200':
+          description: Successfully retrieved the list of featured yachts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YachtsResponse'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:
@@ -375,7 +412,7 @@ paths:
         '200':
           description: Reservation created successfully
         '400':
-          description: Invalid request or yacht not found
+          description: Invalid request, yacht not found, or yacht not available
           content:
             application/json:
               schema:
@@ -386,11 +423,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /yachts/reservations:
     get:
       summary: Get user's reservations
-      description: Retrieve all reservations for the authenticated user
+      description: Retrieve all reservations for the authenticated user with yacht details
       tags:
         - Yachts
       security:
@@ -404,6 +447,12 @@ paths:
                 $ref: '#/components/schemas/ReservationsResponse'
         '401':
           description: Unauthorized - Invalid or missing token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
           content:
             application/json:
               schema:
