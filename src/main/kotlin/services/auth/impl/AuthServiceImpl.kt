@@ -20,7 +20,7 @@ class AuthServiceImpl(
 ) : AuthService {
     override fun register(request: RegisterRequest): RegisterResponse {
         val user = User(
-            id = Random.nextInt(),
+            id = Random.nextInt(Int.MAX_VALUE),
             email = request.email,
             password = request.password
         )

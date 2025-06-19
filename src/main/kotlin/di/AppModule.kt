@@ -5,13 +5,18 @@ import com.example.infrastructure.impl.PasswordEncoderImpl
 import com.example.repository.InMemoryReservationRepository
 import com.example.repository.InMemoryUserRepository
 import com.example.repository.InMemoryYachtRepository
-import com.example.repository.ReservationRepository
+import com.example.repository.BookingRepository
+import com.example.repository.InMemoryLocationRepository
+import com.example.repository.LocationRepository
 import com.example.repository.UserRepository
 import com.example.repository.YachtRepository
 import com.example.services.auth.AuthService
 import com.example.services.auth.JwtService
 import com.example.services.auth.impl.AuthServiceImpl
 import com.example.services.auth.impl.JwtServiceImpl
+import com.example.services.bookings.BookingsService
+import com.example.services.bookings.impl.BookingsMapper
+import com.example.services.bookings.impl.BookingsServiceImpl
 import com.example.services.profile.ProfileService
 import com.example.services.profile.impl.ProfileMapper
 import com.example.services.profile.impl.ProfileServiceImpl
@@ -24,12 +29,15 @@ val appModule = module {
     single<JwtService> { JwtServiceImpl() }
     single<AuthService> { AuthServiceImpl(get(), get(), get()) }
     single<PasswordEncoder> { PasswordEncoderImpl() }
-    single<YachtService> { YachtServiceImpl(get(), get(), get(), get()) }
+    single<YachtService> { YachtServiceImpl(get(), get()) }
     single { YachtMapper() }
     single<ProfileService> { ProfileServiceImpl(get(), get()) }
     single { ProfileMapper() }
+    single<BookingsService> { BookingsServiceImpl(get(), get(), get(), get(), get()) }
+    single { BookingsMapper() }
 
     single<UserRepository> { InMemoryUserRepository() }
     single<YachtRepository> { InMemoryYachtRepository() }
-    single<ReservationRepository> { InMemoryReservationRepository() }
+    single<BookingRepository> { InMemoryReservationRepository() }
+    single<LocationRepository> { InMemoryLocationRepository() }
 }
