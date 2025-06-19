@@ -31,7 +31,7 @@ fun Application.yachtRoutes() {
                 }
                 get("/reservations") {
                     val userEmail = call.getPrincipalStringClaim(JwtClaims.EMAIL)
-                   val response =  yachtService.getAllReservations(userEmail)
+                    val response =  yachtService.getAllReservations(userEmail)
                     call.respond(response)
                 }
             }

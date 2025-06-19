@@ -12,6 +12,9 @@ import com.example.services.auth.AuthService
 import com.example.services.auth.JwtService
 import com.example.services.auth.impl.AuthServiceImpl
 import com.example.services.auth.impl.JwtServiceImpl
+import com.example.services.profile.ProfileService
+import com.example.services.profile.impl.ProfileMapper
+import com.example.services.profile.impl.ProfileServiceImpl
 import com.example.services.yacht.YachtService
 import com.example.services.yacht.impl.YachtMapper
 import com.example.services.yacht.impl.YachtServiceImpl
@@ -22,7 +25,9 @@ val appModule = module {
     single<AuthService> { AuthServiceImpl(get(), get(), get()) }
     single<PasswordEncoder> { PasswordEncoderImpl() }
     single<YachtService> { YachtServiceImpl(get(), get(), get(), get()) }
-    single<YachtMapper> { YachtMapper() }
+    single { YachtMapper() }
+    single<ProfileService> { ProfileServiceImpl(get(), get()) }
+    single { ProfileMapper() }
 
     single<UserRepository> { InMemoryUserRepository() }
     single<YachtRepository> { InMemoryYachtRepository() }
