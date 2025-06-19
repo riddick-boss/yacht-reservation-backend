@@ -3,7 +3,7 @@ package com.example.dto
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AllYachtsResponse(
+data class YachtsResponse(
     val list: List<YachtDto>
 )
 
@@ -14,7 +14,9 @@ data class YachtDto(
     val manufacturer: String,
     val length: Double,
     val crewNum: Int,
-    val price: Int
+    val pricePerDay: Int,
+    val imageUrl: String,
+    val isAvailable: Boolean
 )
 
 @Serializable
