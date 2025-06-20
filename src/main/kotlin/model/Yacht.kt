@@ -12,7 +12,7 @@ data class Yacht(
     val location: Location
 ) {
     data class Location(
-        val latitude: Long,
-        val longitude: Long
+        val latitude: Double,
+        val longitude: Double
     )
 }

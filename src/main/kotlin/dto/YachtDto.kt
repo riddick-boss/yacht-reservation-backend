@@ -28,6 +28,6 @@ data class YachtDto(
 data class YachtLocationDto(
     val id: Int,
     val name: String,
-    val latitude: Long,
-    val longitude: Long
+    val latitude: Double,
+    val longitude: Double
 )
