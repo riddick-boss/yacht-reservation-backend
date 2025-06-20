@@ -28,8 +28,8 @@ class PromoUtilImpl : PromoUtil {
 
     override fun getBannerData(): PromoBannerResponse {
         return PromoBannerResponse(
-            title = promoConfig.banner.message,
-            message = promoConfig.banner.title,
+            title = promoConfig.banner.title,
+            message = promoConfig.banner.message,
             buttonText = promoConfig.banner.buttonText
         )
     }
