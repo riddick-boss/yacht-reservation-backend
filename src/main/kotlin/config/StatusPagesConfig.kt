@@ -9,7 +9,7 @@ import io.ktor.server.response.respondText
 fun Application.configureStatusPages() {
     install(StatusPages) {
         exception<Throwable> { call, cause ->
-            call.respondText(text = "500: ${cause.message}" , status = HttpStatusCode.InternalServerError)
+            call.respondText(text = "500: $cause (${cause.message})" , status = HttpStatusCode.InternalServerError)
         }
     }
 }
