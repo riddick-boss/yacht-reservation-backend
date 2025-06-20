@@ -1,7 +1,9 @@
 package com.example.di
 
 import com.example.infrastructure.PasswordEncoder
+import com.example.infrastructure.PromoUtil
 import com.example.infrastructure.impl.PasswordEncoderImpl
+import com.example.infrastructure.impl.PromoUtilImpl
 import com.example.repository.InMemoryReservationRepository
 import com.example.repository.InMemoryUserRepository
 import com.example.repository.InMemoryYachtRepository
@@ -20,6 +22,8 @@ import com.example.services.bookings.impl.BookingsServiceImpl
 import com.example.services.profile.ProfileService
 import com.example.services.profile.impl.ProfileMapper
 import com.example.services.profile.impl.ProfileServiceImpl
+import com.example.services.promotion.PromoService
+import com.example.services.promotion.impl.PromoServiceImpl
 import com.example.services.yacht.YachtService
 import com.example.services.yacht.impl.YachtMapper
 import com.example.services.yacht.impl.YachtServiceImpl
@@ -35,6 +39,8 @@ val appModule = module {
     single { ProfileMapper() }
     single<BookingsService> { BookingsServiceImpl(get(), get(), get(), get(), get()) }
     single { BookingsMapper() }
+    single<PromoService> { PromoServiceImpl(get(), get(), get()) }
+    single<PromoUtil> { PromoUtilImpl() }
 
     single<UserRepository> { InMemoryUserRepository() }
     single<YachtRepository> { InMemoryYachtRepository() }

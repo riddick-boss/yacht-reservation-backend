@@ -272,6 +272,64 @@ components:
           items:
             $ref: '#/components/schemas/BookingDto'
 
+    YachtPromoDto:
+      type: object
+      required:
+        - id
+        - name
+        - imageUrl
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the yacht
+        name:
+          type: string
+          description: Name of the yacht
+        imageUrl:
+          type: string
+          format: uri
+          description: URL to the yacht's image
+
+    PromoResponse:
+      type: object
+      required:
+        - yacht
+        - location
+        - price
+        - availableDays
+      properties:
+        yacht:
+          $ref: '#/components/schemas/YachtPromoDto'
+        location:
+          type: string
+          description: Name of the marina location
+        price:
+          type: integer
+          description: Discounted price in USD
+        availableDays:
+          type: array
+          items:
+            type: string
+            format: date
+          description: List of available dates for the promotion (YYYY-MM-DD format)
+
+    PromoBannerResponse:
+      type: object
+      required:
+        - title
+        - message
+        - buttonText
+      properties:
+        title:
+          type: string
+          description: Title of the banner
+        message:
+          type: string
+          description: Message content of the banner
+        buttonText:
+          type: string
+          description: Text to display on the banner button
+
 paths:
   /auth/register:
     post:
@@ -585,6 +643,46 @@ paths:
                 $ref: '#/components/schemas/Error'
         '404':
           description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /promotion/banner:
+    get:
+      summary: Get promotion banner
+      description: Retrieve banner data for promotional content display
+      tags:
+        - Promotions
+      responses:
+        '200':
+          description: Successfully retrieved banner data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoBannerResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /promotion:
+    get:
+      summary: Get promotion details
+      description: Retrieve detailed promotion information including yacht, location, discounted price, and available dates
+      tags:
+        - Promotions
+      responses:
+        '200':
+          description: Successfully retrieved promotion details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromoResponse'
+        '500':
+          description: Internal server error
           content:
             application/json:
               schema:
