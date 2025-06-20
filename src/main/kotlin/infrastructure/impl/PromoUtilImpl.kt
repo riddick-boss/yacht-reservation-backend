@@ -15,8 +15,8 @@ class PromoUtilImpl : PromoUtil {
                 buttonText = "Book now"
             ),
             discount = 0.8f,
-            yachtId = Random.nextInt(1, 12),
-            locationId = Random.nextInt(1, 6),
+            yachtId = Random.nextInt(1, 13),
+            locationId = Random.nextInt(1, 7),
             dates = listOf(
                 LocalDate.now().plusDays(Random.nextLong(1, 3)),
                 LocalDate.now().plusDays(Random.nextLong(3, 12)),

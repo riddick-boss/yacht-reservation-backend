@@ -27,7 +27,7 @@ class BookingsServiceImpl(
             userId = user.id,
             yachtId = yacht.id,
             day = day,
-            locationId = Random.nextInt(locationRepository.size())
+            locationId = Random.nextInt(1, locationRepository.size() + 1)
         )
         bookingRepository.add(booking)
     }
