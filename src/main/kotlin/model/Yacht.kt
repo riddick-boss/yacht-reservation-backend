@@ -8,5 +8,11 @@ data class Yacht(
     val crewNum: Int,
     val pricePerDay: Int,
     val imageUrl: String,
-    val isAvailable: Boolean
-)
+    val isAvailable: Boolean,
+    val location: Location
+) {
+    data class Location(
+        val latitude: Double,
+        val longitude: Double
+    )
+}

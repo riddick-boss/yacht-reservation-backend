@@ -272,6 +272,39 @@ components:
           items:
             $ref: '#/components/schemas/BookingDto'
 
+    YachtLocationDto:
+      type: object
+      required:
+        - id
+        - name
+        - latitude
+        - longitude
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the yacht
+        name:
+          type: string
+          description: Name of the yacht
+        latitude:
+          type: number
+          format: double
+          description: Latitude coordinate of the yacht location
+        longitude:
+          type: number
+          format: double
+          description: Longitude coordinate of the yacht location
+
+    YachtsLocationsResponse:
+      type: object
+      required:
+        - list
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/YachtLocationDto'
+
     YachtPromoDto:
       type: object
       required:
@@ -512,6 +545,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/YachtsResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /yachts/locations:
+    get:
+      summary: Get yacht locations
+      description: Retrieves a list of all yacht locations with their coordinates for mapping purposes
+      tags:
+        - Yachts
+      responses:
+        '200':
+          description: Successfully retrieved the list of yacht locations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YachtsLocationsResponse'
         '500':
           description: Internal server error
           content:

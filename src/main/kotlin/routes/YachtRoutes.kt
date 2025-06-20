@@ -19,6 +19,11 @@ fun Application.yachtRoutes() {
                 val response = yachtService.getFeaturedYachts()
                 call.respond(response)
             }
+
+            get("/locations") {
+                val response = yachtService.getLocations()
+                call.respond(response)
+            }
         }
     }
 }
